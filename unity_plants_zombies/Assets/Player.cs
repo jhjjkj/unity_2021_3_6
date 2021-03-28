@@ -6,17 +6,20 @@ public class Player : MonoBehaviour
     [Header("子彈")]
     public GameObject bullet;
     [Header("子彈生成點")]
-    public Transform pointSpawn;
+    public Transform point;
     [Header("子彈速度"), Range(0, 5000)]
     public int speedBullet = 800;
     [Header("開槍音效")]
     public AudioClip soundFire;
     [Header("血量"), Range(0, 200)]
     public float hp = 15;
+    [Header("開槍間隔"), Range(0f, 5f)]
+    public float interval = 1f;
 
     private AudioSource aud;
     private Rigidbody2D rig;
     private Animator ani;
+    private float timer;
     /// <summary>
     /// 取得玩家水平軸向的值
     /// </summary>
@@ -56,24 +59,18 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Fire()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))       // 如果按下左鍵 (手機為觸控)
+        // 音效來源.播放一次音效(音效片段, 音量)
+        aud.PlayOneShot(soundFire, Random.Range(1.2f, 1.5f));
+        if (timer >= interval)
         {
-            // 音效來源.播放一次音效(音效片段, 音量)
-            aud.PlayOneShot(soundFire, Random.Range(1.2f, 1.5f));
-            // 區域變數 名稱 = 生成(物件, 座標, 角度)
-            GameObject temp = Instantiate(bullet, pointSpawn.position, pointSpawn.rotation);
-            // 暫存子彈.取得元件<剛體>().添加推力(生成點右邊 * 子彈速度 + 生成點上方 * 高度)
-            temp.GetComponent<Rigidbody2D>().AddForce(pointSpawn.right * speedBullet + pointSpawn.up * 150);
+            timer = 0;
+            GameObject temp = Instantiate(bullet, point.position, point.rotation);
+            temp.GetComponent<Rigidbody2D>().AddForce(point.right * speedBullet);
         }
-    }
-
-    /// <summary>
-    /// 受傷
-    /// </summary>
-    /// <param name="getDamge">造成的傷害</param>
-    private void Damge(float getDamge)
-    {
-
+        else
+        {
+            timer += Time.deltaTime;
+        }
     }
 
     /// <summary>
