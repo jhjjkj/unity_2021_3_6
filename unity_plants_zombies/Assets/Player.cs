@@ -13,10 +13,6 @@ public class Player : MonoBehaviour
     public AudioClip soundFire;
     [Header("血量"), Range(0, 200)]
     public float hp = 15;
-    [Header("地面判定位移")]
-    public Vector3 offset;
-    [Header("地面判定半徑")]
-    public float radius = 0.3f;
 
     private AudioSource aud;
     private Rigidbody2D rig;
@@ -45,16 +41,6 @@ public class Player : MonoBehaviour
         GetHorizontal();
         Fire();
     }
-
-    // 在 Unity 內繪製圖示
-    private void OnDrawGizmos()
-    {
-        // 圖示.顏色 = 顏色
-        Gizmos.color = new Color(1, 0, 0, 0.35f);
-        // 圖示.繪製球體(中心點, 半徑)
-        Gizmos.DrawSphere(transform.position + offset, radius);
-    }
-
     #region 方法
     /// <summary>
     /// 取得水平軸向
@@ -98,5 +84,4 @@ public class Player : MonoBehaviour
 
     }
     #endregion
-}
 }

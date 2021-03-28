@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement; // 引用 場景管理 API
 
 // C# : 繼承
